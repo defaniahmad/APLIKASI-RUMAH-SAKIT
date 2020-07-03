@@ -1,0 +1,264 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="null" language="groovy" pageWidth="842" pageHeight="595" orientation="Landscape" columnWidth="802" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="491644e3-8899-4fe2-9844-529719f5521e">
+	<property name="ireport.zoom" value="1.0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<style name="Title" fontName="Times New Roman" fontSize="50" isBold="true" pdfFontName="Times-Bold"/>
+	<style name="SubTitle" forecolor="#736343" fontName="Arial" fontSize="18"/>
+	<style name="Column header" forecolor="#666666" fontName="Arial" fontSize="12" isBold="true"/>
+	<style name="Detail" fontName="Arial" fontSize="12"/>
+	<style name="Row" mode="Transparent">
+		<conditionalStyle>
+			<conditionExpression><![CDATA[$V{REPORT_COUNT}%2 == 0]]></conditionExpression>
+			<style backcolor="#E6DAC3"/>
+		</conditionalStyle>
+	</style>
+	<parameter name="kd_pemeriksaan" class="java.lang.String"/>
+	<queryString>
+		<![CDATA[SELECT
+     pemeriksaan.`kd_pemeriksaan` AS pemeriksaan_kd_pemeriksaan,
+     pemeriksaan.`kd_dokter` AS pemeriksaan_kd_dokter,
+     pemeriksaan.`nama_dokter` AS pemeriksaan_nama_dokter,
+     pemeriksaan.`kd_pasien` AS pemeriksaan_kd_pasien,
+     pemeriksaan.`nama_pasien` AS pemeriksaan_nama_pasien,
+     pemeriksaan.`diagnosa` AS pemeriksaan_diagnosa,
+     pemeriksaan.`tgl_pemeriksaan` AS pemeriksaan_tgl_pemeriksaan,
+     pemeriksaan.`hasil` AS pemeriksaan_hasil
+FROM
+     `pemeriksaan` pemeriksaan
+WHERE
+KD_PEMERIKSAAN = $P{kd_pemeriksaan}]]>
+	</queryString>
+	<field name="pemeriksaan_kd_pemeriksaan" class="java.lang.String"/>
+	<field name="pemeriksaan_kd_dokter" class="java.lang.String"/>
+	<field name="pemeriksaan_nama_dokter" class="java.lang.String"/>
+	<field name="pemeriksaan_kd_pasien" class="java.lang.String"/>
+	<field name="pemeriksaan_nama_pasien" class="java.lang.String"/>
+	<field name="pemeriksaan_diagnosa" class="java.lang.String"/>
+	<field name="pemeriksaan_tgl_pemeriksaan" class="java.lang.String"/>
+	<field name="pemeriksaan_hasil" class="java.lang.String"/>
+	<group name="pemeriksaan_nama_dokter">
+		<groupExpression><![CDATA[$F{pemeriksaan_nama_dokter}]]></groupExpression>
+	</group>
+	<group name="pemeriksaan_kd_pasien">
+		<groupExpression><![CDATA[$F{pemeriksaan_kd_pasien}]]></groupExpression>
+	</group>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="238" splitType="Stretch">
+			<line>
+				<reportElement uuid="333b109a-2b6a-43f6-806c-55307ef613a1" style="Title" x="30" y="100" width="750" height="1"/>
+				<graphicElement>
+					<pen lineWidth="3.5" lineStyle="Solid"/>
+				</graphicElement>
+			</line>
+			<staticText>
+				<reportElement uuid="e571853c-519e-4a57-880b-86d6e7328aef" style="Title" x="196" y="100" width="435" height="62"/>
+				<textElement verticalAlignment="Middle">
+					<font size="40" pdfFontName="Times-Roman"/>
+				</textElement>
+				<text><![CDATA[DATA PEMERIKSAAN]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="e571853c-519e-4a57-880b-86d6e7328aef" style="Title" x="156" y="12" width="574" height="62"/>
+				<textElement verticalAlignment="Middle">
+					<font pdfFontName="Times-Roman"/>
+				</textElement>
+				<text><![CDATA[RUMAH SAKIT " POS "]]></text>
+			</staticText>
+			<image>
+				<reportElement uuid="2a24bce9-86fc-4ff5-ac26-5b65403b057b" x="34" y="8" width="94" height="81"/>
+				<imageExpression><![CDATA["E:\\PROJECT\\NETBEANS\\RumahSakit_180101054\\src\\gambar\\icon2_original.jpg"]]></imageExpression>
+			</image>
+			<staticText>
+				<reportElement uuid="1bb2e8b5-dd59-4455-bf93-1a3bc68325e8" x="28" y="172" width="150" height="20"/>
+				<textElement>
+					<font fontName="Arial" size="16" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Kode Pemeriksaan]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="1bb2e8b5-dd59-4455-bf93-1a3bc68325e8" x="28" y="207" width="100" height="20"/>
+				<textElement>
+					<font fontName="Arial" size="16" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Nama Dokter]]></text>
+			</staticText>
+			<textField>
+				<reportElement uuid="878d2a6a-eb78-4f8b-b2c6-eb8671e3e5b6" x="198" y="207" width="152" height="20"/>
+				<textElement>
+					<font fontName="Arial" size="15"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{pemeriksaan_nama_dokter}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement uuid="1bb2e8b5-dd59-4455-bf93-1a3bc68325e8" x="184" y="207" width="12" height="20"/>
+				<textElement>
+					<font fontName="Arial" size="16" isBold="true"/>
+				</textElement>
+				<text><![CDATA[:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="1bb2e8b5-dd59-4455-bf93-1a3bc68325e8" x="411" y="172" width="100" height="20"/>
+				<textElement>
+					<font fontName="Arial" size="16" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Kode Pasien]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="1bb2e8b5-dd59-4455-bf93-1a3bc68325e8" x="185" y="172" width="12" height="20"/>
+				<textElement>
+					<font fontName="Arial" size="16" isBold="true"/>
+				</textElement>
+				<text><![CDATA[:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="1bb2e8b5-dd59-4455-bf93-1a3bc68325e8" x="524" y="172" width="12" height="20"/>
+				<textElement>
+					<font fontName="Arial" size="16" isBold="true"/>
+				</textElement>
+				<text><![CDATA[:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="1bb2e8b5-dd59-4455-bf93-1a3bc68325e8" x="411" y="207" width="100" height="20"/>
+				<textElement>
+					<font fontName="Arial" size="16" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Nama Pasien]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="1bb2e8b5-dd59-4455-bf93-1a3bc68325e8" x="524" y="207" width="12" height="20"/>
+				<textElement>
+					<font fontName="Arial" size="16" isBold="true"/>
+				</textElement>
+				<text><![CDATA[:]]></text>
+			</staticText>
+			<textField>
+				<reportElement uuid="81b6b879-1576-445d-8692-f58b0ab83f06" x="539" y="207" width="218" height="20"/>
+				<textElement>
+					<font fontName="Arial" size="15"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{pemeriksaan_nama_pasien}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="649e4ff1-6dd0-4dab-80b0-0f4e7bf58ffb" x="539" y="172" width="196" height="20"/>
+				<textElement>
+					<font fontName="Arial" size="15"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{pemeriksaan_kd_pasien}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="d9b3944e-0b21-4cea-9cf6-eaa4b55876b2" x="198" y="172" width="139" height="20"/>
+				<textElement>
+					<font fontName="Arial" size="15"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{kd_pemeriksaan}]]></textFieldExpression>
+			</textField>
+		</band>
+	</title>
+	<pageHeader>
+		<band splitType="Stretch"/>
+	</pageHeader>
+	<columnHeader>
+		<band height="49" splitType="Stretch">
+			<staticText>
+				<reportElement uuid="1bb2e8b5-dd59-4455-bf93-1a3bc68325e8" x="298" y="19" width="166" height="20"/>
+				<textElement>
+					<font fontName="Arial" size="16" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Tanggal Pemeriksaan]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="1bb2e8b5-dd59-4455-bf93-1a3bc68325e8" x="78" y="19" width="100" height="20"/>
+				<textElement>
+					<font fontName="Arial" size="16" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Diagnosa]]></text>
+			</staticText>
+			<line>
+				<reportElement uuid="18b05f90-7bbf-4a78-939d-dba791d1d1a9" x="11" y="10" width="750" height="1"/>
+				<graphicElement>
+					<pen lineWidth="2.0"/>
+				</graphicElement>
+			</line>
+			<line>
+				<reportElement uuid="18b05f90-7bbf-4a78-939d-dba791d1d1a9" x="10" y="44" width="750" height="1"/>
+				<graphicElement>
+					<pen lineWidth="2.0"/>
+				</graphicElement>
+			</line>
+			<staticText>
+				<reportElement uuid="1bb2e8b5-dd59-4455-bf93-1a3bc68325e8" x="600" y="19" width="130" height="20"/>
+				<textElement>
+					<font fontName="Arial" size="16" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Hasil]]></text>
+			</staticText>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="40" splitType="Stretch">
+			<textField>
+				<reportElement uuid="fb3009dc-6a5a-455c-908c-071559393e42" x="78" y="8" width="120" height="20"/>
+				<textElement>
+					<font fontName="Arial" size="15"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{pemeriksaan_diagnosa}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="f3a1e8ce-5169-4204-9c9d-4a9f189c90f2" x="298" y="8" width="192" height="20"/>
+				<textElement>
+					<font fontName="Arial" size="15"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{pemeriksaan_tgl_pemeriksaan}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="e77e3a6c-20c6-46ea-acbc-a59205c7c0e0" x="600" y="8" width="161" height="20"/>
+				<textElement>
+					<font fontName="Arial" size="15"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{pemeriksaan_hasil}]]></textFieldExpression>
+			</textField>
+			<line>
+				<reportElement uuid="18b05f90-7bbf-4a78-939d-dba791d1d1a9" x="12" y="35" width="750" height="1"/>
+				<graphicElement>
+					<pen lineWidth="2.0"/>
+				</graphicElement>
+			</line>
+		</band>
+	</detail>
+	<pageFooter>
+		<band height="165" splitType="Stretch">
+			<image>
+				<reportElement uuid="828afb6a-4c68-4126-ae6b-068f876f5edf" x="52" y="38" width="203" height="92"/>
+				<imageExpression><![CDATA["E:\\PROJECT\\NETBEANS\\RumahSakit_180101054\\src\\gambar\\ttd.jpg"]]></imageExpression>
+			</image>
+			<staticText>
+				<reportElement uuid="1bb2e8b5-dd59-4455-bf93-1a3bc68325e8" x="57" y="110" width="173" height="20"/>
+				<textElement textAlignment="Center">
+					<font fontName="Arial" size="14" isBold="true"/>
+				</textElement>
+				<text><![CDATA[ADMIN]]></text>
+			</staticText>
+			<textField pattern="       MMM yyyy" isBlankWhenNull="true">
+				<reportElement uuid="4d5db86b-d7fa-451b-a052-4ebea56d4520" x="126" y="28" width="125" height="20"/>
+				<textElement>
+					<font fontName="Arial" size="14" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[new java.util.Date()]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement uuid="1bb2e8b5-dd59-4455-bf93-1a3bc68325e8" x="57" y="28" width="81" height="20"/>
+				<textElement textAlignment="Left">
+					<font fontName="Arial" size="14" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Surakarta,]]></text>
+			</staticText>
+		</band>
+	</pageFooter>
+	<summary>
+		<band splitType="Stretch"/>
+	</summary>
+</jasperReport>

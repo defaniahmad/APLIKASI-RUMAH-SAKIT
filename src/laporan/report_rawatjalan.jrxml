@@ -1,0 +1,357 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="null" language="groovy" pageWidth="842" pageHeight="595" orientation="Landscape" columnWidth="802" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="dbc72354-1055-45d7-9a35-c53d9e1ba4ff">
+	<property name="ireport.zoom" value="1.0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="79"/>
+	<style name="Title" fontName="Times New Roman" fontSize="50" isBold="true" pdfFontName="Times-Bold"/>
+	<style name="SubTitle" forecolor="#736343" fontName="Arial" fontSize="18"/>
+	<style name="Column header" forecolor="#666666" fontName="Arial" fontSize="12" isBold="true"/>
+	<style name="Detail" fontName="Arial" fontSize="12"/>
+	<style name="Row" mode="Transparent">
+		<conditionalStyle>
+			<conditionExpression><![CDATA[$V{REPORT_COUNT}%2 == 0]]></conditionExpression>
+			<style backcolor="#E6DAC3"/>
+		</conditionalStyle>
+	</style>
+	<parameter name="kd_rawatjalan" class="java.lang.String"/>
+	<queryString>
+		<![CDATA[SELECT
+     rawat_jalan.`kd_jalan` AS rawat_jalan_kd_jalan,
+     rawat_jalan.`kd_dokter` AS rawat_jalan_kd_dokter,
+     rawat_jalan.`nama_dokter` AS rawat_jalan_nama_dokter,
+     rawat_jalan.`kd_pasien` AS rawat_jalan_kd_pasien,
+     rawat_jalan.`nama_pasien` AS rawat_jalan_nama_pasien,
+     rawat_jalan.`kd_resep` AS rawat_jalan_kd_resep,
+     rawat_jalan.`resep_obat` AS rawat_jalan_resep_obat,
+     rawat_jalan.`tgl_periksa` AS rawat_jalan_tgl_periksa,
+     rawat_jalan.`spesialis` AS rawat_jalan_spesialis,
+     rawat_jalan.`biaya_dokter` AS rawat_jalan_biaya_dokter,
+     rawat_jalan.`harga` AS rawat_jalan_harga
+FROM
+     `rawat_jalan` rawat_jalan
+WHERE
+     rawat_jalan.kd_jalan = $P{kd_rawatjalan}]]>
+	</queryString>
+	<field name="rawat_jalan_kd_jalan" class="java.lang.String"/>
+	<field name="rawat_jalan_kd_dokter" class="java.lang.String"/>
+	<field name="rawat_jalan_nama_dokter" class="java.lang.String"/>
+	<field name="rawat_jalan_kd_pasien" class="java.lang.String"/>
+	<field name="rawat_jalan_nama_pasien" class="java.lang.String"/>
+	<field name="rawat_jalan_kd_resep" class="java.lang.String"/>
+	<field name="rawat_jalan_resep_obat" class="java.lang.String"/>
+	<field name="rawat_jalan_tgl_periksa" class="java.sql.Date"/>
+	<field name="rawat_jalan_spesialis" class="java.lang.String"/>
+	<field name="rawat_jalan_biaya_dokter" class="java.lang.Integer"/>
+	<field name="rawat_jalan_harga" class="java.lang.Integer"/>
+	<variable name="rawat_jalan_biaya_dokter_1" class="java.lang.Integer" calculation="Sum">
+		<variableExpression><![CDATA[$F{rawat_jalan_biaya_dokter}]]></variableExpression>
+	</variable>
+	<variable name="rawat_jalan_harga_1" class="java.lang.Integer" calculation="Sum">
+		<variableExpression><![CDATA[$F{rawat_jalan_harga}]]></variableExpression>
+	</variable>
+	<group name="rawat_jalan_nama_dokter">
+		<groupExpression><![CDATA[$F{rawat_jalan_nama_dokter}]]></groupExpression>
+	</group>
+	<group name="rawat_jalan_kd_pasien">
+		<groupExpression><![CDATA[$F{rawat_jalan_kd_pasien}]]></groupExpression>
+	</group>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="269" splitType="Stretch">
+			<staticText>
+				<reportElement uuid="e571853c-519e-4a57-880b-86d6e7328aef" style="Title" x="194" y="102" width="435" height="62"/>
+				<textElement verticalAlignment="Middle">
+					<font size="40" pdfFontName="Times-Roman"/>
+				</textElement>
+				<text><![CDATA[DATA RAWAT JALAN]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="e571853c-519e-4a57-880b-86d6e7328aef" style="Title" x="154" y="14" width="574" height="62"/>
+				<textElement verticalAlignment="Middle">
+					<font pdfFontName="Times-Roman"/>
+				</textElement>
+				<text><![CDATA[RUMAH SAKIT " POS "]]></text>
+			</staticText>
+			<line>
+				<reportElement uuid="333b109a-2b6a-43f6-806c-55307ef613a1" style="Title" x="28" y="102" width="750" height="1"/>
+				<graphicElement>
+					<pen lineWidth="3.5" lineStyle="Solid"/>
+				</graphicElement>
+			</line>
+			<image>
+				<reportElement uuid="2a24bce9-86fc-4ff5-ac26-5b65403b057b" x="32" y="10" width="94" height="81"/>
+				<imageExpression><![CDATA["E:\\PROJECT\\NETBEANS\\RumahSakit_180101054\\src\\gambar\\icon2_original.jpg"]]></imageExpression>
+			</image>
+			<staticText>
+				<reportElement uuid="1bb2e8b5-dd59-4455-bf93-1a3bc68325e8" x="189" y="175" width="12" height="20"/>
+				<textElement>
+					<font fontName="Arial" size="16" isBold="true"/>
+				</textElement>
+				<text><![CDATA[:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="1bb2e8b5-dd59-4455-bf93-1a3bc68325e8" x="32" y="210" width="100" height="20"/>
+				<textElement>
+					<font fontName="Arial" size="16" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Nama Dokter]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="1bb2e8b5-dd59-4455-bf93-1a3bc68325e8" x="188" y="210" width="12" height="20"/>
+				<textElement>
+					<font fontName="Arial" size="16" isBold="true"/>
+				</textElement>
+				<text><![CDATA[:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="1bb2e8b5-dd59-4455-bf93-1a3bc68325e8" x="32" y="175" width="150" height="20"/>
+				<textElement>
+					<font fontName="Arial" size="16" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Kode Rawat Jalan]]></text>
+			</staticText>
+			<textField>
+				<reportElement uuid="08d07938-964f-432f-a31b-853f69d1ee42" x="216" y="175" width="160" height="20"/>
+				<textElement>
+					<font fontName="Arial" size="15"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{rawat_jalan_kd_jalan}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement uuid="1bb2e8b5-dd59-4455-bf93-1a3bc68325e8" x="427" y="175" width="100" height="20"/>
+				<textElement>
+					<font fontName="Arial" size="16" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Kode Pasien]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="1bb2e8b5-dd59-4455-bf93-1a3bc68325e8" x="540" y="175" width="12" height="20"/>
+				<textElement>
+					<font fontName="Arial" size="16" isBold="true"/>
+				</textElement>
+				<text><![CDATA[:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="1bb2e8b5-dd59-4455-bf93-1a3bc68325e8" x="427" y="210" width="100" height="20"/>
+				<textElement>
+					<font fontName="Arial" size="16" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Nama Pasien]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="1bb2e8b5-dd59-4455-bf93-1a3bc68325e8" x="540" y="210" width="12" height="20"/>
+				<textElement>
+					<font fontName="Arial" size="16" isBold="true"/>
+				</textElement>
+				<text><![CDATA[:]]></text>
+			</staticText>
+			<textField>
+				<reportElement uuid="10b759cf-c1f9-4ab1-8c7a-0d8d4f6a8bdb" x="564" y="175" width="154" height="20"/>
+				<textElement>
+					<font fontName="Arial" size="15"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{rawat_jalan_kd_pasien}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="9f543c03-b064-42b6-a62d-7bb617a370d7" x="564" y="210" width="154" height="20"/>
+				<textElement>
+					<font fontName="Arial" size="15"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{rawat_jalan_nama_pasien}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="d4c6f14e-c3f1-4a16-86c0-3f981e825f11" x="216" y="210" width="160" height="20"/>
+				<textElement>
+					<font fontName="Arial" size="15"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{rawat_jalan_nama_dokter}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement uuid="1bb2e8b5-dd59-4455-bf93-1a3bc68325e8" x="190" y="243" width="12" height="20"/>
+				<textElement>
+					<font fontName="Arial" size="16" isBold="true"/>
+				</textElement>
+				<text><![CDATA[:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="1bb2e8b5-dd59-4455-bf93-1a3bc68325e8" x="33" y="243" width="129" height="20"/>
+				<textElement>
+					<font fontName="Arial" size="16" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Spesialis]]></text>
+			</staticText>
+			<textField>
+				<reportElement uuid="ce2d5211-7b1f-4f1e-82f3-9e3e5909b3d4" x="216" y="243" width="160" height="20"/>
+				<textElement>
+					<font fontName="Arial" size="15"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{rawat_jalan_spesialis}]]></textFieldExpression>
+			</textField>
+		</band>
+	</title>
+	<pageHeader>
+		<band splitType="Stretch"/>
+	</pageHeader>
+	<columnHeader>
+		<band height="43" splitType="Stretch">
+			<line>
+				<reportElement uuid="18b05f90-7bbf-4a78-939d-dba791d1d1a9" x="26" y="4" width="750" height="1"/>
+				<graphicElement>
+					<pen lineWidth="2.0"/>
+				</graphicElement>
+			</line>
+			<line>
+				<reportElement uuid="18b05f90-7bbf-4a78-939d-dba791d1d1a9" x="26" y="38" width="750" height="1"/>
+				<graphicElement>
+					<pen lineWidth="2.0"/>
+				</graphicElement>
+			</line>
+			<staticText>
+				<reportElement uuid="1bb2e8b5-dd59-4455-bf93-1a3bc68325e8" x="570" y="12" width="166" height="20"/>
+				<textElement textAlignment="Center">
+					<font fontName="Arial" size="16" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Tanggal Periksa]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="1bb2e8b5-dd59-4455-bf93-1a3bc68325e8" x="216" y="12" width="147" height="20"/>
+				<textElement textAlignment="Center">
+					<font fontName="Arial" size="16" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Resep Obat]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="1bb2e8b5-dd59-4455-bf93-1a3bc68325e8" x="39" y="12" width="150" height="20"/>
+				<textElement textAlignment="Center">
+					<font fontName="Arial" size="16" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Kode Resep Obat]]></text>
+			</staticText>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="131" splitType="Stretch">
+			<textField>
+				<reportElement uuid="e88e3753-44d7-4d8d-9ef9-16a2adaf1bb6" x="39" y="0" width="150" height="20"/>
+				<textElement textAlignment="Center">
+					<font fontName="Arial" size="15"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{rawat_jalan_kd_resep}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="cfd312e5-148c-45ca-9331-1d7a3a5c8c0b" x="216" y="0" width="147" height="20"/>
+				<textElement textAlignment="Center">
+					<font fontName="Arial" size="15"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{rawat_jalan_resep_obat}]]></textFieldExpression>
+			</textField>
+			<textField pattern="dd MMMMM yyyy">
+				<reportElement uuid="77dd83f7-2edb-4e9f-a241-1cf96011b854" x="570" y="0" width="166" height="20"/>
+				<textElement textAlignment="Center">
+					<font fontName="Arial" size="15"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{rawat_jalan_tgl_periksa}]]></textFieldExpression>
+			</textField>
+			<line>
+				<reportElement uuid="18b05f90-7bbf-4a78-939d-dba791d1d1a9" x="27" y="27" width="750" height="1"/>
+				<graphicElement>
+					<pen lineWidth="2.0"/>
+				</graphicElement>
+			</line>
+			<staticText>
+				<reportElement uuid="1bb2e8b5-dd59-4455-bf93-1a3bc68325e8" x="438" y="40" width="147" height="20"/>
+				<textElement textAlignment="Left">
+					<font fontName="Arial" size="16" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Harga Obat]]></text>
+			</staticText>
+			<textField pattern="#,##0.00">
+				<reportElement uuid="7254b78c-b8e2-4c93-a850-fa4f1c7d884e" x="619" y="40" width="157" height="20"/>
+				<textElement textAlignment="Left">
+					<font fontName="Arial" size="15" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{rawat_jalan_harga}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00">
+				<reportElement uuid="f7a9d7bd-ac52-4d00-ac04-04557f441c8c" x="619" y="75" width="157" height="20"/>
+				<textElement>
+					<font fontName="Arial" size="15" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{rawat_jalan_biaya_dokter}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement uuid="1bb2e8b5-dd59-4455-bf93-1a3bc68325e8" x="438" y="75" width="147" height="20"/>
+				<textElement textAlignment="Left">
+					<font fontName="Arial" size="16" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Biaya Dokter]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="1bb2e8b5-dd59-4455-bf93-1a3bc68325e8" x="438" y="108" width="147" height="20"/>
+				<textElement textAlignment="Left">
+					<font fontName="Arial" size="16" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Total Bayar]]></text>
+			</staticText>
+			<textField pattern="#,##0.00">
+				<reportElement uuid="0428a8a7-df67-4417-8e03-01a5a5fbce81" x="619" y="108" width="157" height="20"/>
+				<textElement>
+					<font fontName="Arial" size="15" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{rawat_jalan_biaya_dokter_1} + $V{rawat_jalan_harga_1}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement uuid="1bb2e8b5-dd59-4455-bf93-1a3bc68325e8" x="590" y="40" width="31" height="20"/>
+				<textElement>
+					<font fontName="Arial" size="15" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Rp]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="1bb2e8b5-dd59-4455-bf93-1a3bc68325e8" x="590" y="75" width="31" height="20"/>
+				<textElement>
+					<font fontName="Arial" size="15" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Rp]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="1bb2e8b5-dd59-4455-bf93-1a3bc68325e8" x="590" y="108" width="31" height="20"/>
+				<textElement>
+					<font fontName="Arial" size="15" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Rp]]></text>
+			</staticText>
+		</band>
+	</detail>
+	<columnFooter>
+		<band height="110" splitType="Stretch">
+			<image>
+				<reportElement uuid="828afb6a-4c68-4126-ae6b-068f876f5edf" x="71" y="18" width="203" height="92"/>
+				<imageExpression><![CDATA["E:\\PROJECT\\NETBEANS\\RumahSakit_180101054\\src\\gambar\\ttd.jpg"]]></imageExpression>
+			</image>
+			<staticText>
+				<reportElement uuid="1bb2e8b5-dd59-4455-bf93-1a3bc68325e8" x="76" y="90" width="173" height="20"/>
+				<textElement textAlignment="Center">
+					<font fontName="Arial" size="14" isBold="true"/>
+				</textElement>
+				<text><![CDATA[ADMIN]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="1bb2e8b5-dd59-4455-bf93-1a3bc68325e8" x="76" y="8" width="81" height="20"/>
+				<textElement textAlignment="Left">
+					<font fontName="Arial" size="14" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Surakarta,]]></text>
+			</staticText>
+			<textField pattern="       MMM yyyy" isBlankWhenNull="true">
+				<reportElement uuid="4d5db86b-d7fa-451b-a052-4ebea56d4520" x="145" y="8" width="125" height="20"/>
+				<textElement>
+					<font fontName="Arial" size="14" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[new java.util.Date()]]></textFieldExpression>
+			</textField>
+		</band>
+	</columnFooter>
+</jasperReport>
