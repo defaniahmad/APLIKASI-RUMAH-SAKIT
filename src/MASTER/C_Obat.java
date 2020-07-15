@@ -421,7 +421,7 @@ public class C_Obat extends javax.swing.JDialog {
             if (reply == JOptionPane.YES_OPTION) {
                 try {
                     Connection koneksi = (Connection) DriverManager.getConnection("jdbc:mysql://localhost/rumahsakit","root","");
-                    koneksi.createStatement().executeUpdate("DELETE FROM obat where kd_obat='"+e_kd_obat.getText()+"'");
+                    koneksi.createStatement().executeUpdate("DELETE FROM obat where kd_resep='"+e_kd_obat.getText()+"'");
                     JOptionPane.showMessageDialog(this, "Data Dihapus !");
                     tampil();
                 } catch (SQLException ex) {
@@ -630,6 +630,7 @@ public class C_Obat extends javax.swing.JDialog {
         e_kd_obat.setText(null);
         e_namaobat.setText(null);
         e_dosis.setText(null);
+        e_harga.setText(null);
          pencarian.setText(null);
     }
 
@@ -676,7 +677,7 @@ public class C_Obat extends javax.swing.JDialog {
     private void cek_double_data_simpan() {
         try {
             com.mysql.jdbc.Connection koneksi = (com.mysql.jdbc.Connection) DriverManager.getConnection("jdbc:mysql://localhost/rumahsakit","root","");
-            ResultSet re=koneksi.createStatement().executeQuery("select * from obat where kd_obat = '"+e_kd_obat.getText()+"'");
+            ResultSet re=koneksi.createStatement().executeQuery("select * from obat where kd_resep = '"+e_kd_obat.getText()+"'");
             if (re.next()){
                 JOptionPane.showMessageDialog(null, "Kode Obat : "+e_kd_obat.getText()+"\nSudah Terdaftar\nSilahkan Ganti Kode Obat !", "Error", JOptionPane.WARNING_MESSAGE);
             }else{
@@ -690,7 +691,7 @@ public class C_Obat extends javax.swing.JDialog {
     private void cek_double_data_ubah() {
         try {
             com.mysql.jdbc.Connection koneksi = (com.mysql.jdbc.Connection) DriverManager.getConnection("jdbc:mysql://localhost/rumahsakit","root","");
-            ResultSet re=koneksi.createStatement().executeQuery("select * from obat where kd_obat != '"+temp_kd_obat+"' AND kd_obat='"+e_kd_obat.getText()+"'");
+            ResultSet re=koneksi.createStatement().executeQuery("select * from obat where kd_resep != '"+temp_kd_obat+"' AND kd_resep='"+e_kd_obat.getText()+"'");
             if (re.next()){
                 JOptionPane.showMessageDialog(this, "Kode Obat : "+e_kd_obat.getText()+"\nSudah Terdaftar\nSilahkan Ganti Kode Obat!", "Error", JOptionPane.WARNING_MESSAGE);
             }
@@ -724,9 +725,9 @@ public class C_Obat extends javax.swing.JDialog {
     private void fungsi_ubah_data() {
         try {
             Connection koneksi = (Connection) DriverManager.getConnection("jdbc:mysql://localhost/rumahsakit","root","");
-            koneksi.createStatement().executeUpdate("UPDATE obat SET kd_obat='"+e_kd_obat.getText()+"'"
-            + ",nama_obat='"+e_namaobat.getText()+"',dosis='"+e_dosis.getText()+"',harga='"+e_harga.getText()+"'"
-            + " WHERE kd_obat='"+temp_kd_obat+"'");
+            koneksi.createStatement().executeUpdate("UPDATE obat SET kd_resep='"+e_kd_obat.getText()+"'"
+            + ",resep_obat='"+e_namaobat.getText()+"',dosis='"+e_dosis.getText()+"',harga='"+e_harga.getText()+"'"
+            + " WHERE kd_resep='"+temp_kd_obat+"'");
            JOptionPane.showMessageDialog(this, "Data Diubah !");
         } catch (SQLException ex1) {
            JOptionPane.showMessageDialog(this, "Data Gagal Diubah !");
@@ -748,7 +749,7 @@ public class C_Obat extends javax.swing.JDialog {
             tabel.removeRow(0);
             }
             com.mysql.jdbc.Connection koneksi = (com.mysql.jdbc.Connection) DriverManager.getConnection("jdbc:mysql://localhost/rumahsakit","root","");
-            ResultSet re=koneksi.createStatement().executeQuery("SELECT * FROM obat ORDER BY kd_obat");            
+            ResultSet re=koneksi.createStatement().executeQuery("SELECT * FROM obat ORDER BY kd_resep");            
             while(re.next()){                
                 String[] tabel_master={re.getString(1),re.getString(2),re.getString(3),re.getString(4)};
                 tabel.addRow(tabel_master);
@@ -763,7 +764,7 @@ public class C_Obat extends javax.swing.JDialog {
         String temp_kode_obat="";
         try {
             koneksi();
-            String sql = "select kd_obat from obat order by kd_obat desc limit 1";                        
+            String sql = "select kd_resep from obat order by kd_resep desc limit 1";                        
             ResultSet res=stt.executeQuery(sql);
             while (res.next()) {
                 temp_kode_obat = res.getString(1);                
@@ -808,9 +809,9 @@ public class C_Obat extends javax.swing.JDialog {
                 tabel.removeRow(0);
             }
             com.mysql.jdbc.Connection koneksi = (com.mysql.jdbc.Connection) DriverManager.getConnection("jdbc:mysql://localhost/rumahsakit","root","");
-            ResultSet re=koneksi.createStatement().executeQuery("SELECT * FROM obat where kd_obat LIKE '%"+pencarian.getText()+"%'"
+            ResultSet re=koneksi.createStatement().executeQuery("SELECT * FROM obat where kd_resep LIKE '%"+pencarian.getText()+"%'"
             +"or nama_obat like '%"+pencarian.getText()+"%'"
-            +"or dosis like '%"+pencarian.getText()+"%' ORDER BY kd_obat");
+            +"or dosis like '%"+pencarian.getText()+"%' ORDER BY kd_resep");
             while(re.next()){                    
                 String[] tabel_master={re.getString(1),re.getString(2),re.getString(3),re.getString(4)};
                 tabel.addRow(tabel_master);

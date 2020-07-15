@@ -12,12 +12,17 @@ import java.awt.HeadlessException;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.text.DateFormat;
+import java.text.NumberFormat;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableColumn;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.Locale;
+import java.util.StringTokenizer;
 import javax.swing.ImageIcon;
 
 /**
@@ -33,7 +38,10 @@ public class F_RawatInap extends javax.swing.JDialog {
     public java.sql.Connection con;
     java.text.SimpleDateFormat kal = new java.text.SimpleDateFormat("yyyy-MM-dd");
     private TableColumn column;
-    String temp_kd_inap="";
+    String temp_kd_inap="",masuk, keluar;
+    public StringTokenizer token;
+    public String ganti = "";
+    public long angka;
     
     /**
 
@@ -41,7 +49,7 @@ public class F_RawatInap extends javax.swing.JDialog {
     public F_RawatInap(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
         initComponents();
-        String[] judul={"KODE RAWAT INAP","KODE RUANGAN","NAMA RUANGAN","BIAYA","KODE DOKTER","NAMA DOKTER","SPESIALIS","BIAYA DOKTER","KODE PASIEN","NAMA PASIEN","KODE PERAWAT","NAMA PERAWAT","TANGGAL MASUK","TANGGAL KELUAR"};
+        String[] judul={"KODE RAWAT INAP","KODE RUANGAN","NAMA RUANGAN","BIAYA","KODE DOKTER","NAMA DOKTER","SPESIALIS","BIAYA DOKTER","KODE PASIEN","NAMA PASIEN","KODE PERAWAT","NAMA PERAWAT","TANGGAL MASUK","TANGGAL KELUAR","LAMA MENGINAP","TOTAL BIAYA"};
         tabel = new DefaultTableModel(judul,0);
         jTable1.setModel(tabel);
         tampilkan_data();
@@ -74,18 +82,26 @@ public class F_RawatInap extends javax.swing.JDialog {
         jLabel34 = new javax.swing.JLabel();
         jLabel35 = new javax.swing.JLabel();
         e_biayadokter = new javax.swing.JTextField();
+        totall = new javax.swing.JTextField();
+        jLabel38 = new javax.swing.JLabel();
+        jLabel39 = new javax.swing.JLabel();
         jLabel32 = new javax.swing.JLabel();
         jLabel33 = new javax.swing.JLabel();
         jLabel5 = new javax.swing.JLabel();
         jLabel6 = new javax.swing.JLabel();
+        lama = new javax.swing.JTextField();
+        jLabel36 = new javax.swing.JLabel();
+        jLabel37 = new javax.swing.JLabel();
         jLabel12 = new javax.swing.JLabel();
         jLabel11 = new javax.swing.JLabel();
         jLabel10 = new javax.swing.JLabel();
         e_kdrawatinap = new javax.swing.JTextField();
         jScrollPane2 = new javax.swing.JScrollPane();
         jTable1 = new javax.swing.JTable();
+        hitung = new javax.swing.JButton();
         refresh = new javax.swing.JButton();
         jLabel30 = new javax.swing.JLabel();
+        close = new javax.swing.JButton();
         jLabel31 = new javax.swing.JLabel();
         e_biaya = new javax.swing.JTextField();
         jLabel3 = new javax.swing.JLabel();
@@ -107,7 +123,6 @@ public class F_RawatInap extends javax.swing.JDialog {
         e_namadokter = new javax.swing.JTextField();
         jLabel23 = new javax.swing.JLabel();
         jLabel4 = new javax.swing.JLabel();
-        keluar = new javax.swing.JButton();
         e_kddokter = new javax.swing.JTextField();
         e_tanggalmasuk = new com.toedter.calendar.JDateChooser();
         hapus = new javax.swing.JButton();
@@ -153,6 +168,26 @@ public class F_RawatInap extends javax.swing.JDialog {
         e_biayadokter.setMargin(new java.awt.Insets(0, 3, 0, 3));
         getContentPane().add(e_biayadokter, new org.netbeans.lib.awtextra.AbsoluteConstraints(140, 290, 220, 30));
 
+        totall.setEditable(false);
+        totall.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
+        totall.setText("0 ");
+        totall.setBorder(javax.swing.BorderFactory.createEmptyBorder(1, 10, 1, 1));
+        totall.setMargin(new java.awt.Insets(0, 3, 0, 3));
+        totall.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                totallActionPerformed(evt);
+            }
+        });
+        getContentPane().add(totall, new org.netbeans.lib.awtextra.AbsoluteConstraints(900, 260, 130, 30));
+
+        jLabel38.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        jLabel38.setText(":");
+        getContentPane().add(jLabel38, new org.netbeans.lib.awtextra.AbsoluteConstraints(890, 270, 10, -1));
+
+        jLabel39.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        jLabel39.setText("Total Biaya");
+        getContentPane().add(jLabel39, new org.netbeans.lib.awtextra.AbsoluteConstraints(770, 270, -1, -1));
+
         jLabel32.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         jLabel32.setText("Biaya Dokter");
         getContentPane().add(jLabel32, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 300, -1, -1));
@@ -168,6 +203,21 @@ public class F_RawatInap extends javax.swing.JDialog {
         jLabel6.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         jLabel6.setText("Nama Dokter");
         getContentPane().add(jLabel6, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 260, -1, -1));
+
+        lama.setEditable(false);
+        lama.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
+        lama.setText("0");
+        lama.setBorder(javax.swing.BorderFactory.createEmptyBorder(1, 10, 1, 1));
+        lama.setMargin(new java.awt.Insets(0, 3, 0, 3));
+        getContentPane().add(lama, new org.netbeans.lib.awtextra.AbsoluteConstraints(900, 210, 50, 30));
+
+        jLabel36.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        jLabel36.setText("Lama Menginap");
+        getContentPane().add(jLabel36, new org.netbeans.lib.awtextra.AbsoluteConstraints(770, 220, -1, -1));
+
+        jLabel37.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        jLabel37.setText(":");
+        getContentPane().add(jLabel37, new org.netbeans.lib.awtextra.AbsoluteConstraints(890, 220, 10, -1));
 
         jLabel12.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         jLabel12.setText(":");
@@ -221,6 +271,16 @@ public class F_RawatInap extends javax.swing.JDialog {
 
         getContentPane().add(jScrollPane2, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 390, 1021, 120));
 
+        hitung.setText("HITUNG");
+        hitung.setBorder(javax.swing.BorderFactory.createEmptyBorder(1, 1, 1, 1));
+        hitung.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        hitung.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                hitungActionPerformed(evt);
+            }
+        });
+        getContentPane().add(hitung, new org.netbeans.lib.awtextra.AbsoluteConstraints(860, 300, 87, 37));
+
         refresh.setText("BERSIHKAN");
         refresh.setBorder(javax.swing.BorderFactory.createEmptyBorder(1, 1, 1, 1));
         refresh.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
@@ -229,11 +289,21 @@ public class F_RawatInap extends javax.swing.JDialog {
                 refreshActionPerformed(evt);
             }
         });
-        getContentPane().add(refresh, new org.netbeans.lib.awtextra.AbsoluteConstraints(580, 520, 87, 37));
+        getContentPane().add(refresh, new org.netbeans.lib.awtextra.AbsoluteConstraints(570, 520, 87, 37));
 
         jLabel30.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         jLabel30.setText("Biaya");
         getContentPane().add(jLabel30, new org.netbeans.lib.awtextra.AbsoluteConstraints(400, 190, -1, -1));
+
+        close.setText("KELUAR");
+        close.setBorder(javax.swing.BorderFactory.createEmptyBorder(1, 1, 1, 1));
+        close.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        close.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                closeActionPerformed(evt);
+            }
+        });
+        getContentPane().add(close, new org.netbeans.lib.awtextra.AbsoluteConstraints(920, 520, 87, 37));
 
         jLabel31.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         jLabel31.setText(":");
@@ -348,17 +418,6 @@ public class F_RawatInap extends javax.swing.JDialog {
         jLabel4.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
         getContentPane().add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(6, 10, 70, 64));
 
-        keluar.setText("Keluar");
-        keluar.setBorder(javax.swing.BorderFactory.createEmptyBorder(1, 1, 1, 1));
-        keluar.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
-        keluar.setMargin(new java.awt.Insets(2, 0, 2, 0));
-        keluar.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                keluarActionPerformed(evt);
-            }
-        });
-        getContentPane().add(keluar, new org.netbeans.lib.awtextra.AbsoluteConstraints(930, 520, 87, 37));
-
         e_kddokter.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
         e_kddokter.setBorder(javax.swing.BorderFactory.createEmptyBorder(1, 10, 1, 1));
         e_kddokter.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
@@ -367,6 +426,11 @@ public class F_RawatInap extends javax.swing.JDialog {
 
         e_tanggalmasuk.setDateFormatString("dd MMMM  yyyy");
         e_tanggalmasuk.setEnabled(false);
+        e_tanggalmasuk.addPropertyChangeListener(new java.beans.PropertyChangeListener() {
+            public void propertyChange(java.beans.PropertyChangeEvent evt) {
+                e_tanggalmasukPropertyChange(evt);
+            }
+        });
         getContentPane().add(e_tanggalmasuk, new org.netbeans.lib.awtextra.AbsoluteConstraints(520, 300, 240, 30));
 
         hapus.setText("Hapus");
@@ -485,6 +549,11 @@ public class F_RawatInap extends javax.swing.JDialog {
                 e_tanggalkeluarMouseClicked(evt);
             }
         });
+        e_tanggalkeluar.addPropertyChangeListener(new java.beans.PropertyChangeListener() {
+            public void propertyChange(java.beans.PropertyChangeEvent evt) {
+                e_tanggalkeluarPropertyChange(evt);
+            }
+        });
         getContentPane().add(e_tanggalkeluar, new org.netbeans.lib.awtextra.AbsoluteConstraints(520, 340, 240, 30));
 
         cari.setText("Cari");
@@ -507,7 +576,7 @@ public class F_RawatInap extends javax.swing.JDialog {
         jLabel8.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
         jLabel8.setMaximumSize(new java.awt.Dimension(140, 140));
         jLabel8.setName(""); // NOI18N
-        getContentPane().add(jLabel8, new org.netbeans.lib.awtextra.AbsoluteConstraints(840, 130, 160, 150));
+        getContentPane().add(jLabel8, new org.netbeans.lib.awtextra.AbsoluteConstraints(910, 50, 130, 150));
 
         jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/gambar/Form Master 2.jpg"))); // NOI18N
         getContentPane().add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, -1, -1));
@@ -538,7 +607,6 @@ public class F_RawatInap extends javax.swing.JDialog {
         simpan.setEnabled(false);
         fungsi_simpan=false;
         fungsi_ubah=false;
-        
     }//GEN-LAST:event_refreshActionPerformed
 
     private void empty_field() {
@@ -553,6 +621,8 @@ public class F_RawatInap extends javax.swing.JDialog {
         e_tanggalmasuk.setDate(null);
         e_tanggalkeluar.setDate(null);
         e_namaruangan.setText(null);
+        lama.setText("0");
+        totall.setText("0");
         pencarian.setText(null);
     }
 
@@ -568,10 +638,6 @@ public class F_RawatInap extends javax.swing.JDialog {
         e_kdpasien.setEditable(false);
     }
     
-    private void keluarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_keluarActionPerformed
-        this.dispose();
-    }//GEN-LAST:event_keluarActionPerformed
-
     private void cari_pasienActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cari_pasienActionPerformed
         // TODO add your handling code here:
         String kode_pasien = e_kdpasien.getText();
@@ -669,11 +735,13 @@ String tanggal_keluar = String.valueOf(kal.format(e_tanggalkeluar.getDate()));
 String nama_ruangan = e_namaruangan.getText();
 String kode_ruangan = e_kdruangan.getText();
 String biaya = e_biaya.getText();
+String lamameng = lama.getText();
+String tot = totall.getText();
 try {
 Class.forName("com.mysql.jdbc.Driver").newInstance();
 Connection koneksi = (Connection) DriverManager.getConnection("jdbc:mysql://127.0.0.1/RumahSakit", "root", "");
 Statement statement = (Statement) koneksi.createStatement();
-String sql="UPDATE rawat_inap SET kd_dokter='"+kode_dokter+"',nama_dokter='"+nama_dokter+"',spesialis='"+sp+"',biaya_dokter='"+bi+"',kd_pasien='"+kode_pasien+"',nama_pasien='"+nama_pasien+"',kd_ruangan='"+kode_ruangan+"',nama_ruangan='"+nama_ruangan+"',biaya='"+biaya+"',tgl_inap='"+tanggal_masuk+"',tgl_keluar='"+tanggal_keluar+"' WHERE kd_inap LIKE '"+user_id+"'";
+String sql="UPDATE rawat_inap SET kd_dokter='"+kode_dokter+"',nama_dokter='"+nama_dokter+"',spesialis='"+sp+"',biaya_dokter='"+bi+"',kd_pasien='"+kode_pasien+"',nama_pasien='"+nama_pasien+"',kd_ruangan='"+kode_ruangan+"',nama_ruangan='"+nama_ruangan+"',biaya='"+biaya+"',tgl_inap='"+tanggal_masuk+"',tgl_keluar='"+tanggal_keluar+"',lama_menginap='"+lamameng+"',total_biaya='"+tot+"' WHERE kd_inap LIKE '"+user_id+"'";
 statement.executeUpdate(sql);
 statement.close();
 JOptionPane.showMessageDialog(null, "Data berhasil di UPDATE..","Insert Data",JOptionPane.INFORMATION_MESSAGE);
@@ -703,16 +771,15 @@ String kode_perawat = e_kdperawat.getText();
 String nama_perawat = e_namaperawat.getText();
 String kode_ruangan = e_kdruangan.getText();
 String tanggal_masuk = String.valueOf(kal.format(e_tanggalmasuk.getDate()));
-String genep = "";
-
-
+String lamameng = lama.getText();
+String tot = totall.getText();
 {
 try
 {
 Class.forName("com.mysql.jdbc.Driver").newInstance();
 Connection koneksi = (Connection) DriverManager.getConnection("jdbc:mysql://127.0.0.1/RumahSakit", "root", "");
 Statement statement = (Statement) koneksi.createStatement();
-String sql="insert into rawat_inap values('"+user_id+"','"+kode_ruangan+"','"+nama_ruangan+"','"+biaya+"','"+kode_dokter+"','"+nama_dokter+"','"+sp+"','"+bi+"','"+kode_pasien+"','"+nama_pasien+"','"+kode_perawat+"','"+nama_perawat+"','"+tanggal_masuk+"','"+genep+"')";
+String sql="insert into rawat_inap values('"+user_id+"','"+kode_ruangan+"','"+nama_ruangan+"','"+biaya+"','"+kode_dokter+"','"+nama_dokter+"','"+sp+"','"+bi+"','"+kode_pasien+"','"+nama_pasien+"','"+kode_perawat+"','"+nama_perawat+"','"+tanggal_masuk+"',CURDATE(),'"+lamameng+"','"+tot+"')";
 int executeUpdate = statement.executeUpdate(sql);
 statement.close();
 JOptionPane.showMessageDialog(null, "Data berhasil dimasukkan..","Insert Data",JOptionPane.INFORMATION_MESSAGE);
@@ -780,13 +847,15 @@ tampilkan_data();
             System.out.println(ex);
         }
         e_tanggalkeluar.setDate(tgl_lhr_2);
+        lama.setText(jTable1.getValueAt(jTable1.getSelectedRow(), 14).toString());
+        totall.setText(jTable1.getValueAt(jTable1.getSelectedRow(), 15).toString());
         
         
         
         
         temp_kd_inap = jTable1.getValueAt(jTable1.getSelectedRow(), 0).toString();
         
-        aktif(true);
+        aktif2(true);
         tambah.setEnabled(false);
         hapus.setEnabled(true);
         edit.setEnabled(true);
@@ -872,6 +941,74 @@ JOptionPane.showMessageDialog(null, "Eror:"+e,"Gagal",JOptionPane.WARNING_MESSAG
         // TODO add your handling code here:
     }//GEN-LAST:event_e_kdpasienActionPerformed
 
+    private void hitungActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_hitungActionPerformed
+         // TODO add your handling code here:
+         try {
+    DateFormat format = new SimpleDateFormat("dd MMMM yyyy");
+    Date tanggalmasuk = format.parse(masuk);
+    Date tanggalkeluar = format.parse(keluar);
+    long tanggalmasuk1 = tanggalmasuk.getTime();
+    long tanggalkeluar1 = tanggalkeluar.getTime();
+    long diff = tanggalkeluar1 - tanggalmasuk1;
+    long lamaa = diff / (24 * 60 * 60 * 1000);
+    lama.setText(Long.toString(lamaa) + "");
+    
+    int dokter, ruangan, lamamenginap, b,total;
+    String Hasil;
+    dokter=Integer.valueOf(e_biayadokter.getText());
+    ruangan=Integer.valueOf(e_biaya.getText());
+    lamamenginap=Integer.valueOf(lama.getText());
+    if(lamamenginap <=0){
+    total = dokter + (ruangan * 1);
+    Hasil=String.valueOf(total);
+    totall.setText(Hasil);
+    lama.setText("1");
+    }
+    else{
+    total = dokter + (ruangan * lamamenginap);
+    Hasil=String.valueOf(total);
+    totall.setText(Hasil);
+    }
+    
+    
+
+    
+    angka = Integer.parseInt(totall.getText());
+    ganti = NumberFormat.getNumberInstance(Locale.US).format(angka);
+    token = new StringTokenizer(ganti, ".");
+    ganti = token.nextToken();
+    ganti = ganti.replace(',', '.');
+    totall.setText("Rp. " + String.format(ganti));
+} catch (Exception e) {
+    System.out.println("" + e.getMessage());
+}
+    }//GEN-LAST:event_hitungActionPerformed
+
+    private void e_tanggalmasukPropertyChange(java.beans.PropertyChangeEvent evt) {//GEN-FIRST:event_e_tanggalmasukPropertyChange
+         // TODO add your handling code here:
+         if (e_tanggalmasuk.getDate() != null) {
+      SimpleDateFormat FormatTanggal = new SimpleDateFormat("dd MMMM yyyy");
+      masuk = FormatTanggal.format(e_tanggalmasuk.getDate());
+}
+    }//GEN-LAST:event_e_tanggalmasukPropertyChange
+
+    private void e_tanggalkeluarPropertyChange(java.beans.PropertyChangeEvent evt) {//GEN-FIRST:event_e_tanggalkeluarPropertyChange
+         // TODO add your handling code here:
+         if (e_tanggalkeluar.getDate() != null) {
+     SimpleDateFormat FormatTanggal = new SimpleDateFormat("dd MMMM yyyy");
+     keluar = FormatTanggal.format(e_tanggalkeluar.getDate());
+}
+    }//GEN-LAST:event_e_tanggalkeluarPropertyChange
+
+    private void closeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_closeActionPerformed
+         // TODO add your handling code here:
+         this.dispose();
+    }//GEN-LAST:event_closeActionPerformed
+
+    private void totallActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_totallActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_totallActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -928,6 +1065,7 @@ JOptionPane.showMessageDialog(null, "Eror:"+e,"Gagal",JOptionPane.WARNING_MESSAG
     private javax.swing.JButton cari_kdperawat;
     private javax.swing.JButton cari_kdruangan;
     private javax.swing.JButton cari_pasien;
+    private javax.swing.JButton close;
     private javax.swing.JTextField e_biaya;
     private javax.swing.JTextField e_biayadokter;
     private javax.swing.JTextField e_kddokter;
@@ -944,6 +1082,7 @@ JOptionPane.showMessageDialog(null, "Eror:"+e,"Gagal",JOptionPane.WARNING_MESSAG
     private com.toedter.calendar.JDateChooser e_tanggalmasuk;
     private javax.swing.JButton edit;
     private javax.swing.JButton hapus;
+    private javax.swing.JButton hitung;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
@@ -971,6 +1110,10 @@ JOptionPane.showMessageDialog(null, "Eror:"+e,"Gagal",JOptionPane.WARNING_MESSAG
     private javax.swing.JLabel jLabel33;
     private javax.swing.JLabel jLabel34;
     private javax.swing.JLabel jLabel35;
+    private javax.swing.JLabel jLabel36;
+    private javax.swing.JLabel jLabel37;
+    private javax.swing.JLabel jLabel38;
+    private javax.swing.JLabel jLabel39;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
@@ -978,11 +1121,12 @@ JOptionPane.showMessageDialog(null, "Eror:"+e,"Gagal",JOptionPane.WARNING_MESSAG
     private javax.swing.JLabel jLabel8;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JTable jTable1;
-    private javax.swing.JButton keluar;
+    private javax.swing.JTextField lama;
     private javax.swing.JTextField pencarian;
     private javax.swing.JButton refresh;
     private javax.swing.JButton simpan;
     private javax.swing.JButton tambah;
+    private javax.swing.JTextField totall;
     // End of variables declaration//GEN-END:variables
     
     
@@ -1005,7 +1149,7 @@ JOptionPane.showMessageDialog(null, "Eror:"+e,"Gagal",JOptionPane.WARNING_MESSAG
             com.mysql.jdbc.Connection koneksi = (com.mysql.jdbc.Connection) DriverManager.getConnection("jdbc:mysql://localhost/rumahsakit","root","");
             ResultSet re=koneksi.createStatement().executeQuery("SELECT * FROM rawat_inap ORDER BY kd_inap");            
             while(re.next()){                
-                String[] tabel_master={re.getString(1),re.getString(2),re.getString(3),re.getString(4),re.getString(5),re.getString(6),re.getString(7),re.getString(8),re.getString(9),re.getString(10),re.getString(11),re.getString(12),re.getString(13),re.getString(14)};
+                String[] tabel_master={re.getString(1),re.getString(2),re.getString(3),re.getString(4),re.getString(5),re.getString(6),re.getString(7),re.getString(8),re.getString(9),re.getString(10),re.getString(11),re.getString(12),re.getString(13),re.getString(14),re.getString(15),re.getString(16)};
                 tabel.addRow(tabel_master);
             }
         } catch (SQLException ex) {
@@ -1064,8 +1208,19 @@ JOptionPane.showMessageDialog(null, "Eror:"+e,"Gagal",JOptionPane.WARNING_MESSAG
       e_namaruangan.setEditable(!x);
       e_kdrawatinap.requestFocus();
       e_tanggalmasuk.setEnabled(true);
-      e_tanggalkeluar.setEnabled(true);}
+      e_tanggalkeluar.setEnabled(false);}
 
+    private void aktif2(boolean x) {
+      
+      e_kdpasien.setEditable(x);
+      e_kdruangan.setEditable(x);
+      e_namapasien.setEditable(!x);
+      e_kddokter.setEditable(!x);
+      e_namaruangan.setEditable(!x);
+      e_kdrawatinap.requestFocus();
+      e_tanggalmasuk.setEnabled(true);
+      e_tanggalkeluar.setEnabled(true);}
+    
     private void setTombol(boolean t) {
      tambah.setEnabled(t);
      
@@ -1104,6 +1259,10 @@ JOptionPane.showMessageDialog(null, "Eror:"+e,"Gagal",JOptionPane.WARNING_MESSAG
         column = jTable1.getColumnModel().getColumn(12); 
         column.setPreferredWidth(125);
         column = jTable1.getColumnModel().getColumn(13); 
+        column.setPreferredWidth(125);
+        column = jTable1.getColumnModel().getColumn(14); 
+        column.setPreferredWidth(125);
+        column = jTable1.getColumnModel().getColumn(15); 
         column.setPreferredWidth(125);
 
     } 

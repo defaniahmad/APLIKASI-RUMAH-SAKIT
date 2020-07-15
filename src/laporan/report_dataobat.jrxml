@@ -13,17 +13,19 @@
 			<style backcolor="#E6DAC3"/>
 		</conditionalStyle>
 	</style>
-	<queryString language="SQL">
+	<queryString>
 		<![CDATA[SELECT
-     obat.`kd_obat` AS obat_kd_obat,
-     obat.`nama_obat` AS obat_nama_obat,
-     obat.`dosis` AS obat_dosis
+     obat.`kd_resep` AS obat_kd_resep,
+     obat.`resep_obat` AS obat_resep_obat,
+     obat.`dosis` AS obat_dosis,
+     obat.`harga` AS obat_harga
 FROM
      `obat` obat]]>
 	</queryString>
-	<field name="obat_kd_obat" class="java.lang.String"/>
-	<field name="obat_nama_obat" class="java.lang.String"/>
+	<field name="obat_kd_resep" class="java.lang.String"/>
+	<field name="obat_resep_obat" class="java.lang.String"/>
 	<field name="obat_dosis" class="java.lang.String"/>
+	<field name="obat_harga" class="java.lang.Integer"/>
 	<group name="obat_dosis">
 		<groupExpression><![CDATA[$F{obat_dosis}]]></groupExpression>
 	</group>
@@ -64,69 +66,83 @@ FROM
 	<columnHeader>
 		<band height="51" splitType="Stretch">
 			<staticText>
-				<reportElement uuid="1bb2e8b5-dd59-4455-bf93-1a3bc68325e8" x="545" y="19" width="100" height="20"/>
+				<reportElement uuid="1bb2e8b5-dd59-4455-bf93-1a3bc68325e8" x="441" y="16" width="100" height="20"/>
 				<textElement>
 					<font fontName="Arial" size="16" isBold="true"/>
 				</textElement>
 				<text><![CDATA[Dosis]]></text>
 			</staticText>
 			<staticText>
-				<reportElement uuid="1bb2e8b5-dd59-4455-bf93-1a3bc68325e8" x="157" y="19" width="100" height="20"/>
+				<reportElement uuid="1bb2e8b5-dd59-4455-bf93-1a3bc68325e8" x="59" y="16" width="100" height="20"/>
 				<textElement>
 					<font fontName="Arial" size="16" isBold="true"/>
 				</textElement>
 				<text><![CDATA[Kode Obat]]></text>
 			</staticText>
 			<line>
-				<reportElement uuid="18b05f90-7bbf-4a78-939d-dba791d1d1a9" x="129" y="10" width="539" height="1"/>
+				<reportElement uuid="18b05f90-7bbf-4a78-939d-dba791d1d1a9" x="56" y="7" width="673" height="1"/>
 				<graphicElement>
 					<pen lineWidth="2.0"/>
 				</graphicElement>
 			</line>
 			<line>
-				<reportElement uuid="18b05f90-7bbf-4a78-939d-dba791d1d1a9" x="129" y="44" width="539" height="1"/>
+				<reportElement uuid="18b05f90-7bbf-4a78-939d-dba791d1d1a9" x="56" y="41" width="673" height="1"/>
 				<graphicElement>
 					<pen lineWidth="2.0"/>
 				</graphicElement>
 			</line>
 			<staticText>
-				<reportElement uuid="1bb2e8b5-dd59-4455-bf93-1a3bc68325e8" x="347" y="19" width="100" height="20"/>
+				<reportElement uuid="1bb2e8b5-dd59-4455-bf93-1a3bc68325e8" x="243" y="16" width="100" height="20"/>
 				<textElement>
 					<font fontName="Arial" size="16" isBold="true"/>
 				</textElement>
 				<text><![CDATA[Nama Obat]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="1bb2e8b5-dd59-4455-bf93-1a3bc68325e8" x="595" y="16" width="100" height="20"/>
+				<textElement>
+					<font fontName="Arial" size="16" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Harga]]></text>
 			</staticText>
 		</band>
 	</columnHeader>
 	<detail>
 		<band height="39" splitType="Stretch">
 			<textField>
-				<reportElement uuid="af62f69e-a4ff-4615-9ea8-aa1b7a6dabd9" x="174" y="7" width="100" height="20"/>
+				<reportElement uuid="af62f69e-a4ff-4615-9ea8-aa1b7a6dabd9" x="59" y="4" width="100" height="20"/>
 				<textElement>
 					<font fontName="Arial" size="15"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$F{obat_kd_obat}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{obat_kd_resep}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement uuid="b511aa6c-8421-4d8d-bc4a-1bebf5bd0736" x="347" y="7" width="100" height="20"/>
+				<reportElement uuid="b511aa6c-8421-4d8d-bc4a-1bebf5bd0736" x="243" y="4" width="100" height="20"/>
 				<textElement>
 					<font fontName="Arial" size="15"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$F{obat_nama_obat}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{obat_resep_obat}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement uuid="c0981044-c8a8-4a90-8140-27d41d054757" x="522" y="7" width="146" height="20"/>
+				<reportElement uuid="c0981044-c8a8-4a90-8140-27d41d054757" x="418" y="4" width="146" height="20"/>
 				<textElement>
 					<font fontName="Arial" size="15"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{obat_dosis}]]></textFieldExpression>
 			</textField>
 			<line>
-				<reportElement uuid="18b05f90-7bbf-4a78-939d-dba791d1d1a9" x="129" y="34" width="539" height="1"/>
+				<reportElement uuid="18b05f90-7bbf-4a78-939d-dba791d1d1a9" x="56" y="31" width="673" height="1"/>
 				<graphicElement>
 					<pen lineWidth="2.0"/>
 				</graphicElement>
 			</line>
+			<textField>
+				<reportElement uuid="c0981044-c8a8-4a90-8140-27d41d054757" x="595" y="4" width="146" height="20"/>
+				<textElement>
+					<font fontName="Arial" size="15"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{obat_harga}]]></textFieldExpression>
+			</textField>
 		</band>
 	</detail>
 	<pageFooter>

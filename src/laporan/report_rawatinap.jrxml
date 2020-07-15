@@ -2,7 +2,7 @@
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="null" language="groovy" pageWidth="842" pageHeight="595" orientation="Landscape" columnWidth="802" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="6edfa1f4-79a2-4560-b068-ba4c9bd8487c">
 	<property name="ireport.zoom" value="1.0"/>
 	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="79"/>
+	<property name="ireport.y" value="0"/>
 	<style name="Title" fontName="Times New Roman" fontSize="50" isBold="true" pdfFontName="Times-Bold"/>
 	<style name="SubTitle" forecolor="#736343" fontName="Arial" fontSize="18"/>
 	<style name="Column header" forecolor="#666666" fontName="Arial" fontSize="12" isBold="true"/>
@@ -29,7 +29,9 @@
      rawat_inap.`spesialis` AS rawat_inap_spesialis,
      rawat_inap.`biaya_dokter` AS rawat_inap_biaya_dokter,
      rawat_inap.`tgl_keluar` AS rawat_inap_tgl_keluar,
-     rawat_inap.`tgl_inap` AS rawat_inap_tgl_inap
+     rawat_inap.`tgl_inap` AS rawat_inap_tgl_inap,
+     rawat_inap.`lama_menginap` AS rawat_inap_lama_menginap,
+     rawat_inap.`total_biaya` AS rawat_inap_total_biaya
 FROM
      `rawat_inap` rawat_inap
 WHERE
@@ -49,7 +51,8 @@ WHERE
 	<field name="rawat_inap_biaya_dokter" class="java.lang.Integer"/>
 	<field name="rawat_inap_tgl_keluar" class="java.sql.Date"/>
 	<field name="rawat_inap_tgl_inap" class="java.sql.Date"/>
-	<variable name="total" class="java.lang.Integer" calculation="Sum"/>
+	<field name="rawat_inap_lama_menginap" class="java.lang.String"/>
+	<field name="rawat_inap_total_biaya" class="java.lang.String"/>
 	<variable name="rawat_inap_biaya_1" class="java.lang.Integer" calculation="Sum">
 		<variableExpression><![CDATA[$F{rawat_inap_biaya}]]></variableExpression>
 	</variable>
@@ -204,21 +207,14 @@ WHERE
 	<columnHeader>
 		<band height="43" splitType="Stretch">
 			<staticText>
-				<reportElement uuid="1bb2e8b5-dd59-4455-bf93-1a3bc68325e8" x="424" y="12" width="135" height="20"/>
+				<reportElement uuid="1bb2e8b5-dd59-4455-bf93-1a3bc68325e8" x="365" y="12" width="135" height="20"/>
 				<textElement textAlignment="Center">
 					<font fontName="Arial" size="16" isBold="true"/>
 				</textElement>
 				<text><![CDATA[Tanggal Masuk]]></text>
 			</staticText>
 			<staticText>
-				<reportElement uuid="1bb2e8b5-dd59-4455-bf93-1a3bc68325e8" x="236" y="12" width="131" height="20"/>
-				<textElement textAlignment="Center">
-					<font fontName="Arial" size="16" isBold="true"/>
-				</textElement>
-				<text><![CDATA[Nama Perawat]]></text>
-			</staticText>
-			<staticText>
-				<reportElement uuid="1bb2e8b5-dd59-4455-bf93-1a3bc68325e8" x="57" y="12" width="150" height="20"/>
+				<reportElement uuid="1bb2e8b5-dd59-4455-bf93-1a3bc68325e8" x="40" y="12" width="150" height="20"/>
 				<textElement textAlignment="Center">
 					<font fontName="Arial" size="16" isBold="true"/>
 				</textElement>
@@ -230,6 +226,13 @@ WHERE
 					<pen lineWidth="2.0"/>
 				</graphicElement>
 			</line>
+			<staticText>
+				<reportElement uuid="1bb2e8b5-dd59-4455-bf93-1a3bc68325e8" x="219" y="12" width="131" height="20"/>
+				<textElement textAlignment="Center">
+					<font fontName="Arial" size="16" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Nama Perawat]]></text>
+			</staticText>
 			<line>
 				<reportElement uuid="18b05f90-7bbf-4a78-939d-dba791d1d1a9" x="36" y="4" width="750" height="1"/>
 				<graphicElement>
@@ -237,113 +240,120 @@ WHERE
 				</graphicElement>
 			</line>
 			<staticText>
-				<reportElement uuid="1bb2e8b5-dd59-4455-bf93-1a3bc68325e8" x="623" y="12" width="129" height="20"/>
+				<reportElement uuid="1bb2e8b5-dd59-4455-bf93-1a3bc68325e8" x="519" y="12" width="129" height="20"/>
 				<textElement textAlignment="Center">
 					<font fontName="Arial" size="16" isBold="true"/>
 				</textElement>
 				<text><![CDATA[Tanggal Keluar]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="1bb2e8b5-dd59-4455-bf93-1a3bc68325e8" x="656" y="12" width="129" height="20"/>
+				<textElement textAlignment="Center">
+					<font fontName="Arial" size="16" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Lama Menginap]]></text>
 			</staticText>
 		</band>
 	</columnHeader>
 	<detail>
 		<band height="131" splitType="Stretch">
 			<textField pattern="dd MMMMM yyyy">
-				<reportElement uuid="b1ab821b-b6b3-464d-a6a3-c8b8422f7ad5" x="424" y="0" width="135" height="20"/>
+				<reportElement uuid="b1ab821b-b6b3-464d-a6a3-c8b8422f7ad5" x="365" y="0" width="135" height="20"/>
 				<textElement textAlignment="Center">
 					<font fontName="Arial" size="15"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{rawat_inap_tgl_inap}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement uuid="d25d1f96-f5cb-4d84-8a49-1739e793f146" x="236" y="0" width="131" height="20"/>
+				<reportElement uuid="d25d1f96-f5cb-4d84-8a49-1739e793f146" x="219" y="0" width="131" height="20"/>
 				<textElement textAlignment="Center">
 					<font fontName="Arial" size="15"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{rawat_inap_nama_perawat}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement uuid="dac6f9c3-709a-4cb4-8c25-3363d6bcf930" x="57" y="0" width="150" height="20"/>
+				<reportElement uuid="dac6f9c3-709a-4cb4-8c25-3363d6bcf930" x="40" y="0" width="150" height="20"/>
 				<textElement textAlignment="Center">
 					<font fontName="Arial" size="15"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{rawat_inap_nama_ruangan}]]></textFieldExpression>
 			</textField>
-			<textField pattern="dd MMMMM yyyy">
-				<reportElement uuid="0c653cef-bbf6-4814-aa38-46f453a44640" x="623" y="0" width="129" height="20"/>
-				<textElement textAlignment="Center">
-					<font fontName="Arial" size="15"/>
-				</textElement>
-				<textFieldExpression><![CDATA[$F{rawat_inap_tgl_keluar}]]></textFieldExpression>
-			</textField>
-			<line>
-				<reportElement uuid="18b05f90-7bbf-4a78-939d-dba791d1d1a9" x="37" y="29" width="750" height="1"/>
-				<graphicElement>
-					<pen lineWidth="2.0"/>
-				</graphicElement>
-			</line>
-			<textField pattern="#,##0.00">
-				<reportElement uuid="eb1a8c8d-6d60-4bda-9a43-6d3b742969ee" x="646" y="38" width="140" height="20"/>
-				<textElement>
-					<font fontName="Arial" size="15" isBold="true"/>
-				</textElement>
-				<textFieldExpression><![CDATA[$F{rawat_inap_biaya}]]></textFieldExpression>
-			</textField>
 			<staticText>
-				<reportElement uuid="1bb2e8b5-dd59-4455-bf93-1a3bc68325e8" x="460" y="38" width="129" height="20"/>
-				<textElement>
-					<font fontName="Arial" size="15" isBold="true"/>
-				</textElement>
-				<text><![CDATA[Biaya Ruangan]]></text>
-			</staticText>
-			<textField pattern="#,##0.00">
-				<reportElement uuid="441099e7-5f5d-482c-a53f-72b0e8353e4a" x="646" y="74" width="122" height="20"/>
-				<textElement>
-					<font fontName="Arial" size="15" isBold="true"/>
-				</textElement>
-				<textFieldExpression><![CDATA[$F{rawat_inap_biaya_dokter}]]></textFieldExpression>
-			</textField>
-			<staticText>
-				<reportElement uuid="1bb2e8b5-dd59-4455-bf93-1a3bc68325e8" x="460" y="74" width="129" height="20"/>
+				<reportElement uuid="1bb2e8b5-dd59-4455-bf93-1a3bc68325e8" x="35" y="80" width="129" height="20"/>
 				<textElement>
 					<font fontName="Arial" size="15" isBold="true"/>
 				</textElement>
 				<text><![CDATA[Biaya Dokter]]></text>
 			</staticText>
 			<staticText>
-				<reportElement uuid="1bb2e8b5-dd59-4455-bf93-1a3bc68325e8" x="460" y="107" width="129" height="20"/>
+				<reportElement uuid="1bb2e8b5-dd59-4455-bf93-1a3bc68325e8" x="460" y="60" width="129" height="20"/>
 				<textElement>
 					<font fontName="Arial" size="15" isBold="true"/>
 				</textElement>
 				<text><![CDATA[Total Biaya]]></text>
 			</staticText>
-			<textField pattern="#,##0.00">
-				<reportElement uuid="138d577b-2393-47cb-8aee-b42e770f7650" x="646" y="107" width="122" height="20"/>
+			<staticText>
+				<reportElement uuid="1bb2e8b5-dd59-4455-bf93-1a3bc68325e8" x="192" y="44" width="31" height="20"/>
 				<textElement>
 					<font fontName="Arial" size="15" isBold="true"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$V{rawat_inap_biaya_1} + $V{rawat_inap_biaya_dokter_3}]]></textFieldExpression>
+				<text><![CDATA[Rp.]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="1bb2e8b5-dd59-4455-bf93-1a3bc68325e8" x="192" y="80" width="31" height="20"/>
+				<textElement>
+					<font fontName="Arial" size="15" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Rp.]]></text>
+			</staticText>
+			<line>
+				<reportElement uuid="18b05f90-7bbf-4a78-939d-dba791d1d1a9" x="37" y="29" width="750" height="1"/>
+				<graphicElement>
+					<pen lineWidth="2.0"/>
+				</graphicElement>
+			</line>
+			<textField pattern="dd MMMMM yyyy">
+				<reportElement uuid="0c653cef-bbf6-4814-aa38-46f453a44640" x="519" y="0" width="129" height="20"/>
+				<textElement textAlignment="Center">
+					<font fontName="Arial" size="15"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{rawat_inap_tgl_keluar}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0">
+				<reportElement uuid="eb1a8c8d-6d60-4bda-9a43-6d3b742969ee" x="221" y="44" width="140" height="20"/>
+				<textElement>
+					<font fontName="Arial" size="15" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{rawat_inap_biaya}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0">
+				<reportElement uuid="441099e7-5f5d-482c-a53f-72b0e8353e4a" x="221" y="80" width="139" height="20"/>
+				<textElement>
+					<font fontName="Arial" size="15" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{rawat_inap_biaya_dokter}]]></textFieldExpression>
 			</textField>
 			<staticText>
-				<reportElement uuid="1bb2e8b5-dd59-4455-bf93-1a3bc68325e8" x="617" y="38" width="31" height="20"/>
+				<reportElement uuid="1bb2e8b5-dd59-4455-bf93-1a3bc68325e8" x="35" y="44" width="129" height="20"/>
 				<textElement>
 					<font fontName="Arial" size="15" isBold="true"/>
 				</textElement>
-				<text><![CDATA[Rp]]></text>
+				<text><![CDATA[Biaya Ruangan]]></text>
 			</staticText>
-			<staticText>
-				<reportElement uuid="1bb2e8b5-dd59-4455-bf93-1a3bc68325e8" x="617" y="74" width="31" height="20"/>
+			<textField>
+				<reportElement uuid="86b3bfce-42b5-40a5-9d67-f219a3aae1ae" x="657" y="0" width="129" height="20"/>
+				<textElement textAlignment="Center">
+					<font fontName="Arial" size="15"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{rawat_inap_lama_menginap}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="7476e422-b0c8-4a09-9772-6bab1e886049" x="617" y="60" width="168" height="20"/>
 				<textElement>
 					<font fontName="Arial" size="15" isBold="true"/>
 				</textElement>
-				<text><![CDATA[Rp]]></text>
-			</staticText>
-			<staticText>
-				<reportElement uuid="1bb2e8b5-dd59-4455-bf93-1a3bc68325e8" x="617" y="107" width="31" height="20"/>
-				<textElement>
-					<font fontName="Arial" size="15" isBold="true"/>
-				</textElement>
-				<text><![CDATA[Rp]]></text>
-			</staticText>
+				<textFieldExpression><![CDATA[$F{rawat_inap_total_biaya}]]></textFieldExpression>
+			</textField>
 		</band>
 	</detail>
 	<pageFooter>
