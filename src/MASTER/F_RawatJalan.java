@@ -709,7 +709,7 @@ try
 Class.forName("com.mysql.jdbc.Driver").newInstance();
 Connection koneksi = (Connection) DriverManager.getConnection("jdbc:mysql://127.0.0.1/RumahSakit", "root", "");
 Statement statement = (Statement) koneksi.createStatement();
-String sql="SELECT * FROM obat WHERE kd_obat like '"+kode_obat+"'";
+String sql="SELECT * FROM obat WHERE kd_resep like '"+kode_obat+"'";
  ResultSet rs = statement.executeQuery(sql);
 if (rs.next())
 {
